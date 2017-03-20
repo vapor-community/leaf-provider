@@ -2,7 +2,7 @@ import XCTest
 import Vapor
 @testable import LeafProvider
 
-class leaf_providerTests: XCTestCase {
+class LeafProviderTests: XCTestCase {
     static let allTests = [
         ("testProvider", testProvider),
     ]
