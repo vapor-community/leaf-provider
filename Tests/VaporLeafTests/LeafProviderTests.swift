@@ -1,6 +1,6 @@
 import XCTest
 import Vapor
-@testable import LeafProvider
+@testable import VaporLeaf
 
 class LeafProviderTests: XCTestCase {
     static let allTests = [
@@ -9,7 +9,7 @@ class LeafProviderTests: XCTestCase {
 
     func testProvider() throws {
         let drop = try Droplet()
-        try drop.addProvider(LeafProvider.self)
+        try drop.addProvider(Provider.self)
         let stem = try drop.stem()
         XCTAssertNil(stem.cache)
     }
