@@ -1,5 +1,5 @@
 import XCTest
-@testable import LeafProviderTests
+@testable import VaporLeafTests
 
 XCTMain([
     testCase(LeafProviderTests.allTests),

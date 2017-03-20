@@ -4,7 +4,7 @@ import Leaf
 
 /// Use this provider to use Leaf as your
 /// view renderer
-public final class LeafProvider: Provider {
+public final class Provider: Vapor.Provider {
     /// Use this to create a provider instance
     public init() {}
 
