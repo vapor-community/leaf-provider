@@ -1,11 +1,11 @@
 import PackageDescription
 
-let alpha = Version(2,0,0, prereleaseIdentifiers: ["alpha"])
+let beta = Version(2,0,0, prereleaseIdentifiers: ["beta"])
 
 let package = Package(
-    name: "VaporLeaf",
+    name: "LeafProvider",
     dependencies: [
-        .Package(url: "https://github.com/vapor/vapor.git", alpha),
-        .Package(url: "https://github.com/vapor/leaf.git", alpha),
+        .Package(url: "https://github.com/vapor/vapor.git", beta),
+        .Package(url: "https://github.com/vapor/leaf.git", beta),
     ]
 )
