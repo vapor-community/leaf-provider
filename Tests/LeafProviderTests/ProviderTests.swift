@@ -1,8 +1,8 @@
 import XCTest
 import Vapor
-@testable import VaporLeaf
+@testable import LeafProvider
 
-class LeafProviderTests: XCTestCase {
+class ProviderTests: XCTestCase {
     static let allTests = [
         ("testProvider", testProvider),
     ]

@@ -1,6 +1,6 @@
 import XCTest
-@testable import VaporLeafTests
+@testable import LeafProviderTests
 
 XCTMain([
-    testCase(LeafProviderTests.allTests),
+    testCase(ProviderTests.allTests),
 ])
