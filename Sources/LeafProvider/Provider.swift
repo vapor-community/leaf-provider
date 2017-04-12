@@ -20,6 +20,7 @@ public final class Provider: Vapor.Provider {
 
     public func boot(_ drop: Droplet) throws {
         let renderer = LeafRenderer(viewsDir: drop.viewsDir)
+        drop.addConfigurable(view: renderer, name: "leaf")
 
         // Disable cache by default in development
         // this allows users to update views
@@ -27,9 +28,6 @@ public final class Provider: Vapor.Provider {
         if drop.environment == .development {
             renderer.stem.cache = nil
         }
-
-        drop.view = renderer
-
         drop.storage[stemKey] = renderer.stem
     }
 
