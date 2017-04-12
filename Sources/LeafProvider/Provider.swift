@@ -7,6 +7,9 @@ import Leaf
 public final class Provider: Vapor.Provider {
     /// Use this to create a provider instance
     public init() {}
+    
+    /// Name of the provider git repo
+    public static let repositoryName = "leaf-provider"
 
     /// The config in this scenario is ignored
     /// Droplet provides a views directory and we
@@ -20,6 +23,7 @@ public final class Provider: Vapor.Provider {
 
     public func boot(_ drop: Droplet) throws {
         let renderer = LeafRenderer(viewsDir: drop.viewsDir)
+        drop.addConfigurable(view: renderer, name: "leaf")
 
         // Disable cache by default in development
         // this allows users to update views
@@ -27,9 +31,6 @@ public final class Provider: Vapor.Provider {
         if drop.environment == .development {
             renderer.stem.cache = nil
         }
-
-        drop.view = renderer
-
         drop.storage[stemKey] = renderer.stem
     }
 

@@ -8,8 +8,19 @@ class ProviderTests: XCTestCase {
     ]
 
     func testProvider() throws {
-        let drop = try Droplet()
+        var config = Config([:])
+        try config.set("droplet.view", "leaf")
+        let drop = try Droplet(config: config)
         try drop.addProvider(Provider.self)
+        
+        XCTAssert(drop.view is LeafRenderer)
+        
+        do {
+            _ = try drop.view.make("foo", from: LeafProvider.Provider.self)
+        } catch {
+            //
+        }
+        
         let stem = try drop.stem()
         XCTAssertNil(stem.cache)
     }
