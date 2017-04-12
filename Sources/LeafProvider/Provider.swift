@@ -7,9 +7,6 @@ import Leaf
 public final class Provider: Vapor.Provider {
     /// Use this to create a provider instance
     public init() {}
-    
-    /// Name of the provider git repo
-    public static let repositoryName = "leaf-provider"
 
     /// The config in this scenario is ignored
     /// Droplet provides a views directory and we

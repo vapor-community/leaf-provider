@@ -1,10 +1,6 @@
 import Vapor
 import Leaf
 
-public enum LeafRendererError: Error {
-    case noViewsDirectoryFor(Vapor.Provider.Type)
-}
-
 public final class LeafRenderer: ViewRenderer {
     public let stem: Stem
     public internal(set) var environment: Environment = .development
