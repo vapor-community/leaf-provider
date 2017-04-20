@@ -4,20 +4,35 @@ import Leaf
 public final class LeafRenderer: ViewRenderer {
     public let stem: Stem
     public internal(set) var environment: Environment = .development
+    
+    public var shouldCache: Bool {
+        didSet {
+            if shouldCache {
+                stem.cache = [:]
+            } else {
+                stem.cache = nil
+            }
+        }
+    }
 
     public init(viewsDir: String) {
-        stem = Stem(workingDirectory: viewsDir)
+        let file = DataFile(workDir: viewsDir)
+        stem = Stem(file)
+        shouldCache = false
     }
 
     public func make(_ path: String, _ context: Node) throws -> View {
-        let leaf: Leaf
-        if path.hasPrefix("/") {
-            leaf = try stem.spawnLeaf(at: path)
-        } else {
-            leaf = try stem.spawnLeaf(named: path)
-        }
+        let leaf = try stem.spawnLeaf(at: path)
         let context = Context(context)
         let bytes = try stem.render(leaf, with: context)
         return View(data: bytes)
+    }
+}
+
+// MARK: Config
+
+extension LeafRenderer: ConfigInitializable {
+    public convenience init(config: Config) throws {
+        self.init(viewsDir: config.viewsDir)
     }
 }

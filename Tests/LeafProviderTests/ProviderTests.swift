@@ -10,10 +10,10 @@ class ProviderTests: XCTestCase {
     func testProvider() throws {
         var config = Config([:])
         try config.set("droplet.view", "leaf")
+        try config.addProvider(Provider.self)
         let drop = try Droplet(config: config)
-        try drop.addProvider(Provider.self)
         XCTAssert(drop.view is LeafRenderer)
-        let stem = try drop.stem()
+        let stem = try drop.assertStem()
         XCTAssertNil(stem.cache)
     }
 }

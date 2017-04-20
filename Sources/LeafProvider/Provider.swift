@@ -5,6 +5,8 @@ import Leaf
 /// Use this provider to use Leaf as your
 /// view renderer
 public final class Provider: Vapor.Provider {
+    public static let repositoryName = "leaf-provider"
+    
     /// Use this to create a provider instance
     public init() {}
 
@@ -17,28 +19,30 @@ public final class Provider: Vapor.Provider {
     public convenience init(config: Config) throws {
         self.init()
     }
+    
+    public func boot(_ config: Config) throws {
+        config.addConfigurable(view: LeafRenderer.init, name: "leaf")
+    }
 
     public func boot(_ drop: Droplet) throws {
-        let renderer = LeafRenderer(viewsDir: drop.viewsDir)
-        drop.addConfigurable(view: renderer, name: "leaf")
-
-        // Disable cache by default in development
-        // this allows users to update views
-        // without rebuilding app
-        if drop.environment == .development {
-            renderer.stem.cache = nil
+        if let leaf = drop.view as? LeafRenderer {
+            drop.stem = leaf.stem
         }
-        drop.storage[stemKey] = renderer.stem
     }
 
     public func beforeRun(_ drop: Droplet) throws {}
 }
 
 extension Droplet {
+    public internal(set) var stem: Stem? {
+        get { return storage[stemKey] as? Stem }
+        set { storage[stemKey] = newValue }
+    }
+    
     /// If a leaf provider is properly configured,
     /// use this function to access the underlying
     /// leaf stem for things like adding tags
-    public func stem() throws -> Stem {
+    public func assertStem() throws -> Stem {
         guard let stem = storage[stemKey] as? Stem else {
             throw LeafProviderError.stemNotSet
         }
