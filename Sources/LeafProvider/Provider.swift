@@ -27,6 +27,7 @@ public final class Provider: Vapor.Provider {
     public func boot(_ drop: Droplet) throws {
         if let leaf = drop.view as? LeafRenderer {
             drop.stem = leaf.stem
+            leaf.environment = drop.config.environment
         }
     }
 
