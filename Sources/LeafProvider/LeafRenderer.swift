@@ -3,12 +3,20 @@ import Leaf
 
 public final class LeafRenderer: ViewRenderer {
     public let stem: Stem
-    public internal(set) var environment: Environment = .development
+    public internal(set) var environment: Environment = .development {
+        didSet {
+            if environment == .development {
+                shouldCache = false
+            } else {
+                shouldCache = true
+            }
+        }
+    }
     
     public var shouldCache: Bool {
         didSet {
             if shouldCache {
-                stem.cache = [:]
+                stem.cache = stem.cache ?? SystemCache<Leaf>(maxSize: 1.gigabytes)
             } else {
                 stem.cache = nil
             }
@@ -19,6 +27,11 @@ public final class LeafRenderer: ViewRenderer {
         let file = DataFile(workDir: viewsDir)
         stem = Stem(file)
         shouldCache = false
+    }
+
+    public init(_ stem: Stem) {
+        self.stem = stem
+        shouldCache = stem.cache != nil
     }
 
     public func make(_ path: String, _ context: Node) throws -> View {
