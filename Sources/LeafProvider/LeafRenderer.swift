@@ -4,21 +4,23 @@ import Leaf
 public final class LeafRenderer: ViewRenderer {
     public let stem: Stem
     public internal(set) var environment: Environment = .development
+    public let cacheSize: Int
     
     public var shouldCache: Bool {
         didSet {
             if shouldCache {
-                stem.cache = [:]
+                stem.cache = SystemCache<Leaf>(maxSize: cacheSize.megabytes)
             } else {
                 stem.cache = nil
             }
         }
     }
 
-    public init(viewsDir: String) {
+    public init(viewsDir: String, cacheSize: Int? = nil) {
         let file = DataFile(workDir: viewsDir)
         stem = Stem(file)
         shouldCache = false
+        self.cacheSize = cacheSize ?? 8
     }
 
     public func make(_ path: String, _ context: Node) throws -> View {
@@ -33,6 +35,9 @@ public final class LeafRenderer: ViewRenderer {
 
 extension LeafRenderer: ConfigInitializable {
     public convenience init(config: Config) throws {
-        self.init(viewsDir: config.viewsDir)
+        self.init(
+            viewsDir: config.viewsDir,
+            cacheSize: config["leaf", "cacheSize"]?.int
+        )
     }
 }
