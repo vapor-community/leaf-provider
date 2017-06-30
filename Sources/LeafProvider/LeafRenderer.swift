@@ -22,10 +22,13 @@ public final class LeafRenderer: ViewRenderer {
         shouldCache = false
         self.cacheSize = cacheSize ?? 8
     }
-
-    public func make(_ path: String, _ context: Node) throws -> View {
+    
+    public func make(_ path: String, _ node: Node) throws -> View {
+        return try self.make(path, Context(node))
+    }
+    
+    public func make(_ path: String, _ context: LeafContext) throws -> View {
         let leaf = try stem.spawnLeaf(at: path)
-        let context = Context(context)
         let bytes = try stem.render(leaf, with: context)
         return View(data: bytes)
     }
